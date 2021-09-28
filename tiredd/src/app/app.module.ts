@@ -16,6 +16,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSliderModule } from '@angular/material/slider';
+import { TimeagoModule } from 'ngx-timeago';
 import { ToastrService, ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -33,7 +34,8 @@ import { ToastrService, ToastrModule } from 'ngx-toastr';
     FlexLayoutModule,
     MatIconModule,
     MatSliderModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    TimeagoModule.forRoot()
   ],
   providers: [CookieService, ToastrService],
   bootstrap: [AppComponent],

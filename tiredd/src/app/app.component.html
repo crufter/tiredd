@@ -52,9 +52,8 @@
                 ><a href="{{ post.url }}">{{ post.url }}</a> &nbsp;</span
               >Posted by <span *ngIf="post.userName">{{ post.userName }}</span
               ><span *ngIf="!post.userName">an anonymous coward</span> to
-              <a href="#" (click)="filterSub(post.sub)">{{
-                post.sub
-              }}</a></mat-card-subtitle
+              <a href="#" (click)="filterSub(post.sub)">{{ post.sub }}</a>
+              {{ post.created | timeago }}</mat-card-subtitle
             >
             <mat-card-content>{{ post.content }}</mat-card-content>
             <a href="#" (click)="reveal(post)"
