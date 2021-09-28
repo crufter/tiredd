@@ -3,8 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"net/http"
 	"os"
+	"sort"
 	"time"
 
 	m3o "github.com/micro/services/clients/go"
@@ -366,6 +368,37 @@ func comment(w http.ResponseWriter, req *http.Request) {
 	respond(w, nil, err)
 }
 
+func score(m map[string]interface{}) float64 {
+	score, ok := m["score"].(float64)
+	if !ok {
+		return -10000
+	}
+	sign := float64(1)
+	if score == 0 {
+		sign = 0
+	}
+	if score < 0 {
+		sign = -1
+	}
+	order := math.Log10(math.Max(math.Abs(score), 1))
+	var created int64
+	switch v := m["created"].(type) {
+	case string:
+		t, err := time.Parse(time.RFC3339, v)
+		if err != nil {
+			fmt.Println(err)
+		}
+		created = t.Unix()
+	case float64:
+		created = int64(v)
+	case int64:
+		created = v
+	}
+
+	seconds := created - 1134028003
+	return sign*order + float64(seconds)/45000
+}
+
 func posts(w http.ResponseWriter, req *http.Request) {
 	if cors(w, req) {
 		return
@@ -378,6 +411,7 @@ func posts(w http.ResponseWriter, req *http.Request) {
 		Table:   "posts",
 		Order:   "desc",
 		OrderBy: "created",
+		Limit:   1000,
 	}
 	query := ""
 	if t.Min > 0 {
@@ -394,6 +428,9 @@ func posts(w http.ResponseWriter, req *http.Request) {
 	}
 
 	rsp, err := client.DbService.Read(r)
+	sort.Slice(rsp.Records, func(i, j int) bool {
+		return score(rsp.Records[i]) > score(rsp.Records[j])
+	})
 	respond(w, rsp, err)
 }
 

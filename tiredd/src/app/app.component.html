@@ -23,13 +23,6 @@
           [(ngModel)]="sub"
         />
       </mat-form-field>
-
-      <mat-slider
-        [displayWith]="formatLabel"
-        thumbLabel
-        [(ngModel)]="min"
-      ></mat-slider>
-      Min karma: {{ min }}
     </div>
     <div *ngFor="let post of posts">
       <mat-card style="margin-bottom: 1em">
