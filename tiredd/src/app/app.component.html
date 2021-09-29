@@ -67,7 +67,7 @@
             <a href="#" (click)="reveal(post)"
               >{{ post.commentCount ? post.commentCount : 0 }} Comments</a
             >
-            <div *ngIf="post.expanded" style="width: 100%; height: 100%; overflow: scroll;">
+            <div *ngIf="post.expanded" style="width: 100%;">
               <br /><br />
               <mat-form-field
                 appearance="outline"
