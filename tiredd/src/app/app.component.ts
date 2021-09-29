@@ -75,6 +75,8 @@ interface Scorable {
   score: number;
 }
 
+const hotScoreMin = 2
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -89,7 +91,10 @@ export class AppComponent {
   userID = '';
   comment = '';
   sub = 'all';
-  min: number = 0;
+  hotScoreMin = hotScoreMin;
+  min: number = hotScoreMin;
+  max: number = 0;
+  hot = true
 
   constructor(
     private http: HttpClient,
@@ -129,6 +134,7 @@ export class AppComponent {
   load() {
     let req = {
       min: this.min,
+      max: this.max,
       sub: this.sub,
     };
     this.http

@@ -1,6 +1,6 @@
-<div flexLayout="row" style="padding: 1em" fxLayoutAlign="space-between">
+<div flexLayout="row" style="padding: 3em" fxLayoutAlign="space-between">
   <div fxFlex="70%">
-    <div>
+    <div style="margin-bottom: 1em">
       <span
         style="
           font-size: 1.5em;
@@ -23,9 +23,17 @@
           [(ngModel)]="sub"
         />
       </mat-form-field>
+      <span *ngIf="hot">
+        [ hot ]&nbsp;
+        <a href="#" (click)="hot = false; min = -20; max = hotScoreMin; load() ">new</a>
+      </span>
+      <span *ngIf="!hot">
+        <a href="#" (click)="hot = true; min = hotScoreMin; max = 0; load()">hot</a>
+        &nbsp;[ new ]
+      </span>
     </div>
     <div *ngFor="let post of posts">
-      <mat-card style="margin-bottom: 1em">
+      <mat-card style="margin-bottom: 1em; background: #fafafa">
         <div flexLayout="row">
           <div>
             <mat-icon style="cursor: pointer" (click)="vote(post, true, true)"
@@ -59,7 +67,7 @@
             <a href="#" (click)="reveal(post)"
               >{{ post.commentCount ? post.commentCount : 0 }} Comments</a
             >
-            <div *ngIf="post.expanded" style="width: 100%">
+            <div *ngIf="post.expanded" style="width: 100%; height: 100%; overflow: scroll;">
               <br /><br />
               <mat-form-field
                 appearance="outline"
@@ -87,7 +95,7 @@
               <br />
               <br />
               <mat-card
-                style="margin-bottom: 1em"
+                style="margin-bottom: 1em; background: #fefefe"
                 *ngFor="let comment of post.comments"
               >
                 <div flexLayout="row">
@@ -127,8 +135,8 @@
       </mat-card>
     </div>
   </div>
-  <div fxFlex="29%">
-    <mat-card>
+  <div fxFlex="29%" style="padding-top: 6.5em">
+    <mat-card style="background: #fafafa">
       <mat-card-title>Submit new post </mat-card-title>
       <mat-card-subtitle
         >You can post anonymously without registration</mat-card-subtitle

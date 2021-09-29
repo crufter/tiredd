@@ -70,6 +70,7 @@ type CommentsRequest struct {
 
 type PostsRequest struct {
 	Min int32  `json:"min"`
+	Max int32  `json:"max"`
 	Sub string `json:"sub"`
 }
 
@@ -415,7 +416,13 @@ func posts(w http.ResponseWriter, req *http.Request) {
 	}
 	query := ""
 	if t.Min > 0 {
-		query += "score > " + fmt.Sprintf("%v", t.Min)
+		query += "score >= " + fmt.Sprintf("%v", t.Min)
+	}
+	if t.Max > 0 {
+		if query != "" {
+			query += " and "
+		}
+		query += "score <= " + fmt.Sprintf("%v", t.Max)
 	}
 	if t.Sub != "all" && t.Sub != "" {
 		if query != "" {
@@ -450,6 +457,9 @@ func comments(w http.ResponseWriter, req *http.Request) {
 		Order:   "desc",
 		Query:   "postId == '" + t.PostId + "'",
 		OrderBy: "created",
+	})
+	sort.Slice(rsp.Records, func(i, j int) bool {
+		return score(rsp.Records[i]) > score(rsp.Records[j])
 	})
 	respond(w, rsp, err)
 }
