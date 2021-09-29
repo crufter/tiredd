@@ -52,6 +52,7 @@ interface Comment {
   postId?: number;
   userName?: string;
   userId?: string;
+  created: string;
 }
 
 interface VoteRequest {
