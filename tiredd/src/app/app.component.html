@@ -25,7 +25,7 @@
       </mat-form-field>
       <span *ngIf="hot">
         [ hot ]&nbsp;
-        <a href="#" (click)="hot = false; min = -20; max = hotScoreMin; load() ">new</a>
+        <a href="#" (click)="hot = false; min = -20; max = hotScoreMin - 1; load() ">new</a>
       </span>
       <span *ngIf="!hot">
         <a href="#" (click)="hot = true; min = hotScoreMin; max = 0; load()">hot</a>
