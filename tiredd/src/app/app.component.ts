@@ -76,7 +76,7 @@ interface Scorable {
   score: number;
 }
 
-const hotScoreMin = 2
+const hotScoreMin = 2;
 
 @Component({
   selector: 'app-root',
@@ -95,7 +95,7 @@ export class AppComponent {
   hotScoreMin = hotScoreMin;
   min: number = hotScoreMin;
   max: number = 0;
-  hot = true
+  hot = true;
 
   constructor(
     private http: HttpClient,
@@ -120,6 +120,20 @@ export class AppComponent {
     }
   }
 
+  switchToHot() {
+    this.hot = true
+    this.min = this.hotScoreMin
+    this.max = 0
+    this.load()
+  }
+
+  switchToNew() {
+    this.hot = false
+    this.min = -20
+    this.max = this.hotScoreMin - 1
+    this.load()
+  }
+
   submit() {
     this.http
       .post(environment.url + '/post', {
@@ -128,7 +142,7 @@ export class AppComponent {
       })
       .toPromise()
       .then((rsp) => {
-        this.load();
+        this.switchToNew()
       });
   }
 
@@ -157,7 +171,8 @@ export class AppComponent {
       .then((rsp) => {
         this.cookie.set('token', rsp.session.id ? rsp.session.id : '', 30, '/');
         this.loadUser();
-      }).catch(e => {
+      })
+      .catch((e) => {
         console.log(e);
         this.toastr.error(e.error?.error);
       });

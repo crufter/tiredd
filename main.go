@@ -121,10 +121,8 @@ func vote(w http.ResponseWriter, req *http.Request, upvote bool, isComment bool,
 		Id:    checkId,
 	})
 	mod := isMod(sessionRsp.Session.UserId, mods)
-	modAlreadyVoted := false
 	if err == nil && (checkRsp != nil && len(checkRsp.Records) > 0) {
 		if !mod {
-			modAlreadyVoted = true
 			return fmt.Errorf("already voted")
 		}
 	}
@@ -134,7 +132,7 @@ func vote(w http.ResponseWriter, req *http.Request, upvote bool, isComment bool,
 		val = float64(rand.Intn(17-4) + 4)
 	}
 
-	if !(mod && modAlreadyVoted) {
+	if !mod {
 		_, err = client.DbService.Create(&db.CreateRequest{
 			Table: checkTable,
 			Record: map[string]interface{}{
