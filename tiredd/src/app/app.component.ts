@@ -273,4 +273,10 @@ export class AppComponent {
 
     return value;
   }
+
+  logout() {
+    this.cookie.set('token', '', 30, '/');
+    this.userID = ""
+    this.username = ''
+  }
 }

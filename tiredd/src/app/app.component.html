@@ -183,7 +183,10 @@
         </button>
       </mat-card>
       <br />
-      <mat-card *ngIf="userID"> Logged in as {{ username }} </mat-card>
+      <mat-card *ngIf="userID">
+        Logged in as {{ username }}.
+        <a href="#" (click)="logout()">Log out</a></mat-card
+      >
       <mat-card *ngIf="!userID">
         <mat-card-title>Login/Register</mat-card-title>
         <mat-card-subtitle
