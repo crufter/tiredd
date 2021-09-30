@@ -462,7 +462,7 @@ func posts(w http.ResponseWriter, req *http.Request) {
 		Limit:   1000,
 	}
 	query := ""
-	if t.Min > 0 {
+	if t.Min != 0 {
 		query += "score >= " + fmt.Sprintf("%v", t.Min)
 	}
 	if t.Max > 0 {
