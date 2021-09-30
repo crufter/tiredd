@@ -120,18 +120,20 @@ export class AppComponent {
     }
   }
 
-  switchToHot() {
+  switchToHot(): boolean {
     this.hot = true;
     this.min = this.hotScoreMin;
     this.max = 0;
     this.load();
+    return false;
   }
 
-  switchToNew() {
+  switchToNew(): boolean {
     this.hot = false;
     this.min = -20;
     this.max = this.hotScoreMin - 1;
     this.load();
+    return false;
   }
 
   submit() {
@@ -220,11 +222,12 @@ export class AppComponent {
       });
   }
 
-  reveal(p: Post) {
+  reveal(p: Post): boolean {
     if (!p.expanded) {
       this.loadComments(p);
     }
     p.expanded = !p.expanded;
+    return false;
   }
 
   loadComments(p: Post) {
@@ -242,9 +245,10 @@ export class AppComponent {
       });
   }
 
-  filterSub(sub: string) {
+  filterSub(sub: string):boolean {
     this.sub = sub;
     this.load();
+    return false
   }
 
   submitComment(p: Post) {
@@ -276,7 +280,7 @@ export class AppComponent {
 
   logout() {
     this.cookie.set('token', '', 30, '/');
-    this.userID = ""
-    this.username = ''
+    this.userID = '';
+    this.username = '';
   }
 }

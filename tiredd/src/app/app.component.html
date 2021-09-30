@@ -71,7 +71,7 @@
                 {{ post.created | timeago }}</mat-card-subtitle
               >
               <mat-card-content>{{ post.content }}</mat-card-content>
-              <a href="#" (click)="reveal(post)"
+              <a href="#"(click)="reveal(post); false"
                 >{{ post.commentCount ? post.commentCount : 0 }} Comments</a
               >
               <div *ngIf="post.expanded" style="width: 100%">
