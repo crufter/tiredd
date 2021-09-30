@@ -274,6 +274,18 @@ func post(w http.ResponseWriter, req *http.Request) {
 		respond(w, nil, fmt.Errorf("url or content required"))
 		return
 	}
+	if len(t.Post.Title) > 200 || len(t.Post.Url) > 200 {
+		respond(w, nil, fmt.Errorf("post url or title too long"))
+		return
+	}
+	if len(t.Post.Sub) > 50 {
+		respond(w, nil, fmt.Errorf("post sub too long"))
+		return
+	}
+	if len(t.Post.Content) > 3000 {
+		respond(w, nil, fmt.Errorf("post content too long"))
+		return
+	}
 	userID := ""
 	userName := ""
 	if t.SessionID != "" {
