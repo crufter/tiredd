@@ -1,3 +1,7 @@
+# TIREDD
+
+Tirred is an open source reddit clone
+
 This Readme is copied from https://crufter.com/toy-open-source-reddit-clone.
 
 As someone who likes the concept of Reddit but dislikes how the site is run, I keep launching short lived side projects.
