@@ -7,9 +7,9 @@ This Readme is copied from https://crufter.com/toy-open-source-reddit-clone.
 As someone who likes the concept of Reddit but dislikes how the site is run, I keep launching short lived side projects.
 I mostly use [Lemmy](https://github.com/LemmyNet/lemmy), but I can't justify running a SQL server and a VM for projects nobody cares about!
 
-So as a toy project to test out [Micro](https://m3o.com) (disclaimer: I am a contributor), I decided to build a fun little Reddit inspired toy app: [Tiredd](tiredd.org) ([github repo](https://github.com/m3o/tiredd))
+So as a toy project to test out [Micro](https://m3o.com) (disclaimer: I am a contributor), I decided to build a fun little Reddit inspired toy app: [Tiredd](tiredd.org) ([github repo](https://github.com/crufter/tiredd))
 
-It is only about a thousand lines, and only a single page. The backend is a [single Go file](https://github.com/m3o/tiredd/blob/master/main.go), the frontend is a [single Angular component](https://github.com/m3o/tiredd/blob/master/tiredd/src/app/app.component.ts).
+It is only about a thousand lines, and only a single page. The backend is a [single Go file](https://github.com/crufter/tiredd/blob/master/main.go), the frontend is a [single Angular component](https://github.com/crufter/tiredd/blob/master/tiredd/src/app/app.component.ts).
 
 ## What it has
 
