@@ -263,7 +263,16 @@ func post(w http.ResponseWriter, req *http.Request) {
 	var t PostRequest
 	err := decoder.Decode(&t)
 	if err != nil {
-		fmt.Fprintf(w, fmt.Sprintf("%v", err.Error()))
+		respond(w, nil, err)
+		return
+	}
+	if t.Post.Sub == "" || t.Post.Title == "" {
+		respond(w, nil, fmt.Errorf("both title and sub are required"))
+		return
+	}
+	if t.Post.Url == "" && t.Post.Content == "" {
+		respond(w, nil, fmt.Errorf("url or content required"))
+		return
 	}
 	userID := ""
 	userName := ""
