@@ -157,6 +157,9 @@ export class AppComponent {
       .then((rsp) => {
         this.cookie.set('token', rsp.session.id ? rsp.session.id : '', 30, '/');
         this.loadUser();
+      }).catch(e => {
+        console.log(e);
+        this.toastr.error(e.error?.error);
       });
   }
 

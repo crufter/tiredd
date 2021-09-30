@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"math/rand"
 	"net/http"
 	"os"
 	"sort"
+	"strings"
 	"time"
 
 	m3o "github.com/micro/services/clients/go"
@@ -16,6 +18,9 @@ import (
 )
 
 var client = m3o.NewClient(os.Getenv("MICRO_API_TOKEN"))
+
+// csv of user ids
+var mods = os.Getenv("TIREDD_MODS")
 
 // Types
 
@@ -69,9 +74,10 @@ type CommentsRequest struct {
 }
 
 type PostsRequest struct {
-	Min int32  `json:"min"`
-	Max int32  `json:"max"`
-	Sub string `json:"sub"`
+	Min   int32  `json:"min"`
+	Max   int32  `json:"max"`
+	Limit int32  `json:"limit"`
+	Sub   string `json:"sub"`
 }
 
 // Endpoints
@@ -114,18 +120,30 @@ func vote(w http.ResponseWriter, req *http.Request, upvote bool, isComment bool,
 		Table: checkTable,
 		Id:    checkId,
 	})
+	mod := isMod(sessionRsp.Session.UserId, mods)
+	modAlreadyVoted := false
 	if err == nil && (checkRsp != nil && len(checkRsp.Records) > 0) {
-		return fmt.Errorf("already voted")
+		if !mod {
+			modAlreadyVoted = true
+			return fmt.Errorf("already voted")
+		}
+	}
+	val := float64(1)
+	if mod {
+		rand.Seed(time.Now().UnixNano())
+		val = float64(rand.Intn(17-4) + 4)
 	}
 
-	_, err = client.DbService.Create(&db.CreateRequest{
-		Table: checkTable,
-		Record: map[string]interface{}{
-			"id": checkId,
-		},
-	})
-	if err != nil {
-		return err
+	if !(mod && modAlreadyVoted) {
+		_, err = client.DbService.Create(&db.CreateRequest{
+			Table: checkTable,
+			Record: map[string]interface{}{
+				"id": checkId,
+			},
+		})
+		if err != nil {
+			return err
+		}
 	}
 
 	obj := rsp.Records[0]
@@ -141,7 +159,7 @@ func vote(w http.ResponseWriter, req *http.Request, upvote bool, isComment bool,
 		obj["downvotes"] = float64(0)
 	}
 
-	obj[key] = obj[key].(float64) + 1
+	obj[key] = obj[key].(float64) + val
 	obj["score"] = obj["upvotes"].(float64) - obj["downvotes"].(float64)
 
 	_, err = client.DbService.Update(&db.UpdateRequest{
@@ -150,6 +168,16 @@ func vote(w http.ResponseWriter, req *http.Request, upvote bool, isComment bool,
 		Record: obj,
 	})
 	return err
+}
+
+func isMod(userId, s string) bool {
+	arr := strings.Split(s, ",")
+	for _, v := range arr {
+		if v == userId {
+			return true
+		}
+	}
+	return false
 }
 
 func voteWrapper(upvote bool, isComment bool) func(w http.ResponseWriter, req *http.Request) {
