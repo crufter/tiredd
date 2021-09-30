@@ -121,17 +121,17 @@ export class AppComponent {
   }
 
   switchToHot() {
-    this.hot = true
-    this.min = this.hotScoreMin
-    this.max = 0
-    this.load()
+    this.hot = true;
+    this.min = this.hotScoreMin;
+    this.max = 0;
+    this.load();
   }
 
   switchToNew() {
-    this.hot = false
-    this.min = -20
-    this.max = this.hotScoreMin - 1
-    this.load()
+    this.hot = false;
+    this.min = -20;
+    this.max = this.hotScoreMin - 1;
+    this.load();
   }
 
   submit() {
@@ -142,7 +142,11 @@ export class AppComponent {
       })
       .toPromise()
       .then((rsp) => {
-        this.switchToNew()
+        this.switchToNew();
+      })
+      .catch((e) => {
+        console.log(e);
+        this.toastr.error(e.error?.error);
       });
   }
 
@@ -158,6 +162,10 @@ export class AppComponent {
       .then((rsp) => {
         this.posts = rsp.records;
         console.log(typeof rsp);
+      })
+      .catch((e) => {
+        console.log(e);
+        this.toastr.error(e.error?.error);
       });
   }
 
@@ -227,6 +235,10 @@ export class AppComponent {
       .toPromise()
       .then((rsp) => {
         p.comments = rsp.records;
+      })
+      .catch((e) => {
+        console.log(e);
+        this.toastr.error(e.error?.error);
       });
   }
 
@@ -247,6 +259,10 @@ export class AppComponent {
       .toPromise()
       .then((rsp) => {
         this.loadComments(p);
+      })
+      .catch((e) => {
+        console.log(e);
+        this.toastr.error(e.error?.error);
       });
   }
 
